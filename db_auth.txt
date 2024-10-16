@@ -1,5 +1,0 @@
-DB_HOST = '172.20.3.106'
-DB_PORT = '3306'
-DB_NAME = 'redmine'
-DB_USER = 'leonardo_bessa'
-DB_PASS = 'bessacotec'
