@@ -1,6 +1,6 @@
 
         DELIMITER //
-        CREATE PROCEDURE ${PROCEDURE_NAME}()
+        CREATE PROCEDURE minha_procedure()
         BEGIN
             -- Defina sua lógica aqui
             SELECT 'Hello, world!' AS message;
