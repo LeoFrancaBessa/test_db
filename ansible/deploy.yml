@@ -1,0 +1,18 @@
+---
+- name: Deploy MySQL Procedure
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Create SQL file for the procedure
+      copy:
+        dest: "{{ output_file }}"
+        content: "{{ procedure_content }}"
+
+    - name: Execute SQL file on MySQL
+      command: >
+        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} < {{ output_file }}
+
+    - name: Call the stored procedure
+      command: >
+        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} -e "CALL {{ procedure_name }}();"
