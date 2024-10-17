@@ -11,8 +11,20 @@
 
     - name: Execute SQL file on MySQL
       command: >
-        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} < {{ output_file }}
+        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} -e "{{ procedure_content }}"
+      register: sql_execution_result
+
+    - name: Check if SQL execution was successful
+      fail:
+        msg: "Failed to create the procedure: {{ sql_execution_result.stderr }}"
+      when: sql_execution_result.rc != 0
 
     - name: Call the stored procedure
       command: >
-        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} -e "CALL {{ procedure_name }}();"
+        mysql -h {{ db_host }} -P {{ db_port }} -u {{ db_user }} -p{{ db_pass }} -D {{ db_schema }} -e "{{ procedure_content }}"
+      register: procedure_call_result
+
+    - name: Check for errors in procedure call
+      fail:
+        msg: "Failed to call stored procedure: {{ procedure_call_result.stderr }}"
+      when: procedure_call_result.rc != 0
