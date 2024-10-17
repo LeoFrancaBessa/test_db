@@ -1,1 +1,1 @@
-Select 1 as message
+Select 2 as message
