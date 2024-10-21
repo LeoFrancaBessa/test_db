@@ -53,6 +53,18 @@ pipeline {
               '''
             }
           }
+          stage('Execute Playbook') {
+            sh '''#!/bin/bash
+              mv ./playbook.yml /home/ansible/main_playbook.yml
+              cat /home/ansible/main_playbook.yml
+            '''
+            ansiblePlaybook (
+              playbook: '/home/ansible/main_playbook.yml',
+              inventory: '/home/ansible/hosts',
+              vaultCredentialsId: 'ansible_vault_pass',
+              colorized: 'true'
+            )
+          }
         }
       }
     }
