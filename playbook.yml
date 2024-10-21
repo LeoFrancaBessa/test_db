@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  roles:
+    - mgmt_db
+
+  vars:
+
+  vars_files:
+    - ~/.passwd_vars.yml
+...
