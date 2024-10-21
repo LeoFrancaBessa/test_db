@@ -41,9 +41,7 @@ pipeline {
           stage('Build Ansible Inventory') {
             sh '''#!/bin/bash
               cd /home/ansible
-
               echo 'localhost' >./hosts
-
               cat ./hosts
             '''
           }
@@ -81,20 +79,20 @@ pipeline {
           }
           stage('Clone Packages Repository') {
             // Clonar o repositório Git
+            sh "cd .."
             git branch: "main", url: "${env.GIT_REPO}"
             // Switch para branch
             sh "git switch ${BRANCH} || git switch -c ${BRANCH}"
           }
           stage('Commit and Push Changes to Git') {
-            withCredentials([gitUsernamePassword(credentialsId:
-              'github-test-procedure', gitToolName: 'git')]) {
+            withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 sh """
                 git config --global user.email "${GIT_AUTHOR_EMAIL}"
                 git config --global user.name "${GIT_AUTHOR_USERNAME}"
                 git add .
                 git commit -m "${commitMessage}"
-                git pull --rebase https://github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
-                git push https://github.com/LeoFrancaBessa/test_db.git ${BRANCH}
+                git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
+                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
                 """
             }
           }
