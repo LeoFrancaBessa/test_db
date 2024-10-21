@@ -88,14 +88,20 @@ pipeline {
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 sh """
-                git config --global user.email "${GIT_AUTHOR_EMAIL}"
-                git config --global user.name "${GIT_AUTHOR_USERNAME}"
-                cd /tmp/test_cam_repo/test_cam
-                git add .
-                git commit -m "${commitMessage}"
-                git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
-                git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
-                """
+                  git config --global user.email "${GIT_AUTHOR_EMAIL}"
+                  git config --global user.name "${GIT_AUTHOR_USERNAME}"
+                  cd /tmp/test_cam_repo/test_cam
+
+                  # Verificar se há mudanças no repositório
+                  if ! git diff --quiet HEAD; then
+                      git add .
+                      git commit -m "${commitMessage}"
+                      git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
+                      git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
+                  else
+                      echo "Sem mudanças para commitar."
+                  fi
+              """
             }
           }
         }
