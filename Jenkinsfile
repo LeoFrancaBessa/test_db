@@ -66,8 +66,7 @@ pipeline {
           stage('Execute Playbook') {
             sh '''#!/bin/bash
               git clone https://github.com/LeoFrancaBessa/test_procedure_ansible.git
-              cd test_procedure_ansible
-              mv ./playbook.yml /home/ansible/main_playbook.yml
+              mv test_procedure_ansible/playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
             ansiblePlaybook (
@@ -78,11 +77,10 @@ pipeline {
             )
           }
           stage('Clone Packages Repository') {
-            // Clonar o repositório Git
-            sh "cd .."
-            git branch: "main", url: "${env.GIT_REPO}"
-            // Switch para branch
-            sh "git switch ${BRANCH} || git switch -c ${BRANCH}"
+            sh """ git clone https://github.com/LeoFrancaBessa/test_cam.git
+                   cd test_cam
+                   git switch ${BRANCH} || git switch -c ${BRANCH}
+              """
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
