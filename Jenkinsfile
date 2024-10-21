@@ -49,10 +49,7 @@ pipeline {
                 cd /home/ansible/roles
                 echo $(pwd)
 
-                git clone http://git.sefaz.ma.gov.br/cit-haut/\
-ansible-mgmt_db.git mgmt_db
-                git clone http://git.sefaz.ma.gov.br/cit-haut/\
-notificationMail.git
+                git clone https://github.com/LeoFrancaBessa/test_procedure_ansible.git
               '''
             }
           }
