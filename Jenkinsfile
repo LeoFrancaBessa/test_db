@@ -77,10 +77,13 @@ pipeline {
             )
           }
           stage('Clone Packages Repository') {
-            sh """ git clone https://github.com/LeoFrancaBessa/test_cam.git
-                   cd test_cam
-                   git switch ${BRANCH} || git switch -c ${BRANCH}
-              """
+            sh """
+                mkdir -p /tmp/test_cam_repo  // Cria um diretório temporário para o repositório
+                cd /tmp/test_cam_repo        // Muda para o diretório temporário
+                git clone https://github.com/LeoFrancaBessa/test_cam.git
+                cd test_cam
+                git switch ${BRANCH} || git switch -c ${BRANCH}
+            """
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
