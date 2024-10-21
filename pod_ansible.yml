@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ansible
+spec:
+  containers:
+    - name: ansible
+      image: "image-registry.openshift-image-registry.svc:5000/\
+        cit-hiperautomacao/ansible-oracle:v0.5cit"
+      imagePullPolicy: Always
+      command:
+        - tail
+        - -f
+        - /dev/null
+      resources:
+        requests:
+          memory: 2Gi
+          cpu: 500m
+        limits:
+          memory: 2Gi
+    - name: jnlp
+      image: "image-registry.openshift-image-registry.svc:5000/\
+        cit-hiperautomacao/jenkins-agent:jdk11-v0.4cit"
+  nodeSelector:
+    env: hml
+imagePullSecrets:
