@@ -88,6 +88,16 @@ pipeline {
             // Switch para branch
             sh "git switch ${BRANCH} || git switch -c ${BRANCH}"
           }
+          stage('Commit and Push Changes to Git') {
+            sh """
+                git config --global user.email "${GIT_AUTHOR_EMAIL}"
+                git config --global user.name "${GIT_AUTHOR_USERNAME}"
+                git add .
+                git commit -m "${commitMessage}"
+                git pull --rebase https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
+                git push https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
+            """
+          }
         }
       }
     }
