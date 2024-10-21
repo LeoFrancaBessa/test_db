@@ -83,13 +83,11 @@ pipeline {
             )
           }
           stage('Clone Packages Repository') {
-            steps {
-                script {
-                    // Clonar o repositório Git
-                    git branch: "main", url: "${env.GIT_REPO}"
-                    // Switch para branch
-                    bat "git switch ${BRANCH} || git switch -c ${BRANCH}"
-                }
+            script {
+                // Clonar o repositório Git
+                git branch: "main", url: "${env.GIT_REPO}"
+                // Switch para branch
+                bat "git switch ${BRANCH} || git switch -c ${BRANCH}"
             }
           }
         }
