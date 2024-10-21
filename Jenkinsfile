@@ -54,6 +54,7 @@ pipeline {
           stage('Execute Playbook') {
             sh '''#!/bin/bash
               git clone https://github.com/LeoFrancaBessa/test_procedure_ansible.git
+              cd test_procedure_ansible
               mv ./playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
