@@ -5,6 +5,23 @@ pipeline {
 
   environment {
     ANSIBLE_VAULT = credentials('passwd_vars')
+     // Variáveis do repositório e credenciais
+      GIT_REPO = 'https://github.com/LeoFrancaBessa/test_cam.git'
+      BRANCH = 'teste'
+      GIT_AUTHOR_USERNAME = 'teste'
+      GIT_AUTHOR_EMAIL = 'teste@teste.com'
+      commitMessage = "Adicionado arquivo da procedure SQL"
+
+      // Variáveis do banco de dados
+      DB_HOST = '172.20.3.106'
+      DB_PORT = '3306'
+      DB_SCHEMA = 'redmine'
+      DB_USER = 'leonardo_bessa'
+      DB_PASS = 'bessacotec'
+
+      // Definir o conteúdo da procedure diretamente como texto
+      PROCEDURE_CONTENT = "Select 3 as message"
+      PROCEDURE_NAME = 'minha_procedure.sql'
   }
 
   agent {
@@ -64,6 +81,16 @@ pipeline {
               vaultCredentialsId: 'ansible_vault_pass',
               colorized: 'true'
             )
+          }
+          stage('Clone Packages Repository') {
+            steps {
+                script {
+                    // Clonar o repositório Git
+                    git branch: "main", url: "${env.GIT_REPO}"
+                    // Switch para branch
+                    bat "git switch ${BRANCH} || git switch -c ${BRANCH}"
+                }
+            }
           }
         }
       }
