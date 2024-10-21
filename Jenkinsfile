@@ -90,6 +90,7 @@ pipeline {
                 sh """
                 git config --global user.email "${GIT_AUTHOR_EMAIL}"
                 git config --global user.name "${GIT_AUTHOR_USERNAME}"
+                cd /tmp/test_cam_repo
                 git add .
                 git commit -m "${commitMessage}"
                 git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
