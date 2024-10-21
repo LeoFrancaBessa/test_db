@@ -59,14 +59,11 @@ pipeline {
             '''
           }
           stage('Clone Ansible Role(s) from the git server') {
-            withCredentials([gitUsernamePassword(credentialsId:
-              'gitcredentials', gitToolName: 'git')]) {
-              sh '''#!/bin/bash
-                mkdir /home/ansible/roles 2>/dev/null
-                cd /home/ansible/roles
-                echo $(pwd)
-              '''
-            }
+            sh '''#!/bin/bash
+              mkdir /home/ansible/roles 2>/dev/null
+              cd /home/ansible/roles
+              echo $(pwd)
+            '''
           }
           stage('Execute Playbook') {
             sh '''#!/bin/bash
@@ -89,14 +86,17 @@ pipeline {
             sh "git switch ${BRANCH} || git switch -c ${BRANCH}"
           }
           stage('Commit and Push Changes to Git') {
-            sh """
+            withCredentials([gitUsernamePassword(credentialsId:
+              'github-test-procedure', gitToolName: 'git')]) {
+                sh """
                 git config --global user.email "${GIT_AUTHOR_EMAIL}"
                 git config --global user.name "${GIT_AUTHOR_USERNAME}"
                 git add .
                 git commit -m "${commitMessage}"
-                git pull --rebase https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
-                git push https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
-            """
+                git pull --rebase https://github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
+                git push https://github.com/LeoFrancaBessa/test_db.git ${BRANCH}
+                """
+            }
           }
         }
       }
