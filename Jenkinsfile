@@ -7,7 +7,7 @@ pipeline {
     ANSIBLE_VAULT = credentials('passwd_vars')
      // Variáveis do repositório e credenciais
       GIT_REPO = 'https://github.com/LeoFrancaBessa/test_cam.git'
-      BRANCH = 'teste'
+      BRANCH = 'main'
       GIT_AUTHOR_USERNAME = 'teste'
       GIT_AUTHOR_EMAIL = 'teste@teste.com'
       commitMessage = "Adicionado arquivo da procedure SQL"
@@ -126,8 +126,8 @@ pipeline {
 
                   git add .
                   git commit -m "${commitMessage}"
-                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
-                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
+                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/teste_cam.git ${BRANCH} || true
+                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/teste_cam.git ${BRANCH}
               """
             }
           }
