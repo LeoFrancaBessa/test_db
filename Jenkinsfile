@@ -108,14 +108,12 @@ pipeline {
             """
           }
           stage('Create SQL File') {
-            steps {
-              script {
-                // Criar o arquivo SQL com o conteúdo das variáveis
-                writeFile file: '/tmp/test_cam_repo/test_cam/novo_package.sql', text: """${PACKAGE_HEAD}
+            script {
+              // Criar o arquivo SQL com o conteúdo das variáveis
+              writeFile file: '/tmp/test_cam_repo/test_cam/novo_package.sql', text: """${PACKAGE_HEAD}
 /
 ${PACKAGE_BODY}
 /"""
-              }
             }
           }
           stage('Commit and Push Changes to Git') {
