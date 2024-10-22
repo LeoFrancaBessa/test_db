@@ -81,7 +81,7 @@ pipeline {
               mv ./playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
-            withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
+            withCredentials([usernamePassword(credentialsId: 'dev-bd-credentials', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
               ansiblePlaybook (
                 playbook: '/home/ansible/main_playbook.yml',
                 inventory: '/home/ansible/hosts',
