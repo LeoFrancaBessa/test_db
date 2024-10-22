@@ -13,8 +13,27 @@ pipeline {
       commitMessage = "Adicionado arquivo da procedure SQL"
 
       // Definir o conteúdo da procedure diretamente como texto
-      PROCEDURE_CONTENT = "Select 3 as message"
-      PROCEDURE_NAME = 'minha_procedure.sql'
+      PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE exemplo_package IS
+                          -- Procedimento que imprime uma mensagem
+                          PROCEDURE diga_ola(nome IN VARCHAR2);
+
+                          -- Função que retorna uma saudação personalizada
+                          FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2;
+                        END exemplo_package;"""
+      
+      PACKAGE_BODY = """CREATE OR REPLACE PACKAGE BODY exemplo_package IS
+                        -- Implementação do procedimento que imprime uma mensagem
+                        PROCEDURE diga_ola(nome IN VARCHAR2) IS
+                        BEGIN
+                            DBMS_OUTPUT.PUT_LINE('Olá, ' || nome || '!');
+                        END diga_ola;
+
+                        -- Implementação da função que retorna uma saudação personalizada
+                        FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2 IS
+                        BEGIN
+                            RETURN 'Saudações, ' || nome || '!';
+                        END saudacao;
+                      END exemplo_package;"""
   }
 
   agent {
@@ -73,7 +92,7 @@ pipeline {
                   db_name : "dev",
                   db_port: '1521',
                   db_user : "${DB_USER}",
-                  db_ass : "${DB_PASS}"
+                  db_pass : "${DB_PASS}"
                 ]
               )
             }
