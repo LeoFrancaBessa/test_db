@@ -107,18 +107,17 @@ pipeline {
                 git switch ${BRANCH} || git switch -c ${BRANCH}
             """
           }
-          stage('Create SQL File') {
-            script {
-              // Criar o arquivo SQL com o conteúdo das variáveis
-              writeFile file: '/tmp/test_cam_repo/test_cam/novo_package.sql', text: """${PACKAGE_HEAD}
-/
-${PACKAGE_BODY}
-/"""
+          stage('Create SQL File with Echo') {
+            steps {
+              script {
+                sh """
+                  echo "${PACKAGE_HEAD}" > /tmp/test_cam_repo/test_cam/novo_package.sql
+                  echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                  echo "${PACKAGE_BODY}" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                  echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                """
+              }
             }
-            sh """
-                cd /tmp/test_cam_repo/test_cam
-                cat novo_package.sql  # Exibir o conteúdo do arquivo criado
-            """
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
