@@ -92,7 +92,7 @@ pipeline {
                   db_name : "dev",
                   db_port: '1521',
                   db_user : "${DB_USER}",
-                  db_pass : "${DB_PASS}"
+                  db_pass : "${DB_PASS}",
                   package_head : "${PACKAGE_HEAD}",
                   package_body : "${PACKAGE_BODY}"
                 ]
