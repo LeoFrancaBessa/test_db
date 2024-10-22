@@ -108,18 +108,15 @@ pipeline {
             """
           }
           stage('Create SQL File') {
-            sh '''
-                cd /tmp/test_cam_repo/test_cam
-
-                # Criar o arquivo SQL com o conteúdo das variáveis usando cat e heredoc
-                cat << EOF > novo_package.sql
-                ${PACKAGE_HEAD}
-                /
-                
-                ${PACKAGE_BODY}
-                /
-                EOF
-            '''
+            steps {
+              script {
+                // Criar o arquivo SQL com o conteúdo das variáveis
+                writeFile file: '/tmp/test_cam_repo/test_cam/novo_package.sql', text: """${PACKAGE_HEAD}
+/
+${PACKAGE_BODY}
+/"""
+              }
+            }
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
