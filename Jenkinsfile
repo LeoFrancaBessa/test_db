@@ -126,8 +126,8 @@ pipeline {
 
                   git add .
                   git commit -m "${commitMessage}"
-                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/teste_cam.git ${BRANCH} || true
-                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/teste_cam.git ${BRANCH}
+                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH} || true
+                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH}
               """
             }
           }
