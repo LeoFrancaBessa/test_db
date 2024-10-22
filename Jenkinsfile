@@ -13,7 +13,7 @@ pipeline {
       commitMessage = "Adicionado arquivo da procedure SQL"
 
       // Definir o conteúdo da procedure diretamente como texto
-      PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE exemplo_package IS
+      PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE HAUT.exemplo_package IS
                           -- Procedimento que imprime uma mensagem
                           PROCEDURE diga_ola(nome IN VARCHAR2);
 
@@ -21,7 +21,7 @@ pipeline {
                           FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2;
                         END exemplo_package;"""
       
-      PACKAGE_BODY = """CREATE OR REPLACE PACKAGE BODY exemplo_package IS
+      PACKAGE_BODY = """CREATE OR REPLACE PACKAGE BODY HAUT.exemplo_package IS
                         -- Implementação do procedimento que imprime uma mensagem
                         PROCEDURE diga_ola(nome IN VARCHAR2) IS
                         BEGIN
