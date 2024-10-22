@@ -12,13 +12,6 @@ pipeline {
       GIT_AUTHOR_EMAIL = 'teste@teste.com'
       commitMessage = "Adicionado arquivo da procedure SQL"
 
-      // Variáveis do banco de dados
-      DB_HOST = '172.20.3.106'
-      DB_PORT = '3306'
-      DB_SCHEMA = 'redmine'
-      DB_USER = 'leonardo_bessa'
-      DB_PASS = 'bessacotec'
-
       // Definir o conteúdo da procedure diretamente como texto
       PROCEDURE_CONTENT = "Select 3 as message"
       PROCEDURE_NAME = 'minha_procedure.sql'
@@ -69,18 +62,21 @@ pipeline {
               mv ./playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
-            ansiblePlaybook (
-              playbook: '/home/ansible/main_playbook.yml',
-              inventory: '/home/ansible/hosts',
-              vaultCredentialsId: 'ansible_vault_pass',
-              colorized: 'true',
-              extraVars: [
-                DB_HOST : "${DB_HOST}",
-                DB_SCHEMA : "${DB_SCHEMA}",
-                DB_USER : "${DB_USER}",
-                DB_PASS : "${DB_PASS}"
-              ]
-            )
+            withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
+              ansiblePlaybook (
+                playbook: '/home/ansible/main_playbook.yml',
+                inventory: '/home/ansible/hosts',
+                vaultCredentialsId: 'ansible_vault_pass',
+                colorized: 'true',
+                extraVars: [
+                  db_host : "10.1.1.80",
+                  db_name : "dev",
+                  db_port: '1521',
+                  db_user : "${DB_USER}",
+                  db_ass : "${DB_PASS}"
+                ]
+              )
+            }
           }
           stage('Clone Packages Repository') {
             sh """
