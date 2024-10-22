@@ -14,26 +14,26 @@ pipeline {
 
       // Definir o conteúdo da procedure diretamente como texto
       PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE HAUT.exemplo_package IS
--- Procedimento que imprime uma mensagem
-PROCEDURE diga_ola(nome IN VARCHAR2);
+                      -- Procedimento que imprime uma mensagem
+                      PROCEDURE diga_ola(nome IN VARCHAR2);
 
--- Função que retorna uma saudação personalizada
-FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2;
-END exemplo_package;"""
+                      -- Função que retorna uma saudação personalizada
+                      FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2;
+                      END exemplo_package;"""
       
       PACKAGE_BODY = """CREATE OR REPLACE PACKAGE BODY HAUT.exemplo_package IS
--- Implementação do procedimento que imprime uma mensagem
-PROCEDURE diga_ola(nome IN VARCHAR2) IS
-BEGIN
-DBMS_OUTPUT.PUT_LINE('Olá, ' || nome || '!');
-END diga_ola;
+                      -- Implementação do procedimento que imprime uma mensagem
+                      PROCEDURE diga_ola(nome IN VARCHAR2) IS
+                      BEGIN
+                      DBMS_OUTPUT.PUT_LINE('Olá, ' || nome || '!');
+                      END diga_ola;
 
--- Implementação da função que retorna uma saudação personalizada
-FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2 IS
-BEGIN
-RETURN 'Saudações, ' || nome || '!';
-END saudacao;
-END exemplo_package;""".replace("'", "''")
+                      -- Implementação da função que retorna uma saudação personalizada
+                      FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2 IS
+                      BEGIN
+                      RETURN 'Saudações, ' || nome || '!';
+                      END saudacao;
+                      END exemplo_package;""".replace("'", "''")
   }
 
   agent {
@@ -41,7 +41,6 @@ END exemplo_package;""".replace("'", "''")
       cloud 'openshift'
       defaultContainer 'ansible'
       namespace 'cit-hiperautomacao'
-      //idleMinutes 1
       yamlFile 'pod_ansible.yml'
     }
   }
@@ -106,6 +105,18 @@ END exemplo_package;""".replace("'", "''")
                 git clone ${GIT_REPO}
                 cd test_cam
                 git switch ${BRANCH} || git switch -c ${BRANCH}
+            """
+          }
+          stage('Create SQL File For Commit') {
+            sh """
+                cd /tmp/test_cam_repo/test_cam
+
+                # Criar o arquivo SQL com o conteúdo das variáveis
+                echo "${PACKAGE_HEAD}" > novo_package.sql
+                echo "/" >> novo_package.sql
+                echo "" >> novo_package.sql
+                echo "${PACKAGE_BODY}" >> novo_package.sql
+                echo "/" >> novo_package.sql
             """
           }
           stage('Commit and Push Changes to Git') {
