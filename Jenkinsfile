@@ -115,6 +115,10 @@ pipeline {
 ${PACKAGE_BODY}
 /"""
             }
+            sh """
+                cd /tmp/test_cam_repo/test_cam
+                cat novo_package.sql  # Exibir o conteúdo do arquivo criado
+            """
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
