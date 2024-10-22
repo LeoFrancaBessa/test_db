@@ -77,7 +77,7 @@ pipeline {
               extraVars: [
                 DB_HOST : "${DB_HOST}",
                 DB_SCHEMA : "${DB_SCHEMA}",
-                DB_NAME : "cent",
+                DB_NAME : "dev",
                 DB_USER : "${DB_USER}",
                 DB_PASS : "${DB_PASS}"
               ]
