@@ -99,7 +99,7 @@ pipeline {
             //   )
             // }
             sh """
-              sqlplus -s haut/Haut_123@10.1.1.80:1521/dev <<EOF
+              sqlplus haut/Haut_123@10.1.1.80:1521/dev <<EOF
               ${PACKAGE_HEAD}
               EOF
               """
