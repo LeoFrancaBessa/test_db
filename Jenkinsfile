@@ -100,7 +100,11 @@ pipeline {
             // }
             sh """
               sqlplus haut/Haut_123@10.1.1.80:1521/dev <<EOF
+              SET ECHO ON
+              SET FEEDBACK ON
+              SET HEADING ON
               ${PACKAGE_HEAD}
+              EXIT;
               EOF
               """
           }
