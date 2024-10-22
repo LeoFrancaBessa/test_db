@@ -98,8 +98,7 @@ pipeline {
             //     ]
             //   )
             // }
-            sh """" sqlplus haut/Haut_123//10.1.1.80:1521/dev ${PACKAGE_HEAD}
-            """
+            sh """" sqlplus haut/Haut_123//10.1.1.80:1521/dev <<EOF ${PACKAGE_HEAD} EOF """
           }
           stage('Clone Packages Repository') {
             sh """
