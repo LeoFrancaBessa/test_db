@@ -25,13 +25,13 @@ pipeline {
                         -- Implementação do procedimento que imprime uma mensagem
                         PROCEDURE diga_ola(nome IN VARCHAR2) IS
                         BEGIN
-                            DBMS_OUTPUT.PUT_LINE('Olá, ' || nome || '!');
+                            DBMS_OUTPUT.PUT_LINE("Olá, " || nome || "!");
                         END diga_ola;
 
                         -- Implementação da função que retorna uma saudação personalizada
                         FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2 IS
                         BEGIN
-                            RETURN 'Saudações, ' || nome || '!';
+                            RETURN "Saudações, " || nome || "!";
                         END saudacao;
                       END exemplo_package;"""
   }
