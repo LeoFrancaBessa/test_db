@@ -81,23 +81,25 @@ pipeline {
               mv ./playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
-            withCredentials([usernamePassword(credentialsId: 'dev-bd-credentials', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
-              ansiblePlaybook (
-                playbook: '/home/ansible/main_playbook.yml',
-                inventory: '/home/ansible/hosts',
-                vaultCredentialsId: 'ansible_vault_pass',
-                colorized: 'true',
-                extraVars: [
-                  db_host : "10.1.1.80",
-                  db_name : "dev",
-                  db_port: '1521',
-                  db_user : "${DB_USER}",
-                  db_pass : "${DB_PASS}",
-                  package_head : "${PACKAGE_HEAD}",
-                  package_body : "${PACKAGE_BODY}"
-                ]
-              )
-            }
+            // withCredentials([usernamePassword(credentialsId: 'dev-bd-credentials', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASS')]) {
+            //   ansiblePlaybook (
+            //     playbook: '/home/ansible/main_playbook.yml',
+            //     inventory: '/home/ansible/hosts',
+            //     vaultCredentialsId: 'ansible_vault_pass',
+            //     colorized: 'true',
+            //     extraVars: [
+            //       db_host : "10.1.1.80",
+            //       db_name : "dev",
+            //       db_port: '1521',
+            //       db_user : "${DB_USER}",
+            //       db_pass : "${DB_PASS}",
+            //       package_head : "${PACKAGE_HEAD}",
+            //       package_body : "${PACKAGE_BODY}"
+            //     ]
+            //   )
+            // }
+            sh ''' sqlplus haut/Haut_123//10.1.1.80:1521/dev
+            '''
           }
           stage('Clone Packages Repository') {
             sh """
