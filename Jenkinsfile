@@ -21,7 +21,7 @@ pipeline {
                           FUNCTION saudacao(nome IN VARCHAR2) RETURN VARCHAR2;
                         END exemplo_package;"""
       
-      PACKAGE_BODY = """CREATE OR REPLACE PACKAGE BODY HAUT.exemplo_package IS
+      PACKAGE_BODY = '''CREATE OR REPLACE PACKAGE BODY HAUT.exemplo_package IS
                         -- Implementação do procedimento que imprime uma mensagem
                         PROCEDURE diga_ola(nome IN VARCHAR2) IS
                         BEGIN
@@ -33,7 +33,7 @@ pipeline {
                         BEGIN
                             RETURN 'Saudações, ' || nome || '!';
                         END saudacao;
-                      END exemplo_package;"""
+                      END exemplo_package;'''
   }
 
   agent {
@@ -98,15 +98,6 @@ pipeline {
                 ]
               )
             }
-            // sh """
-            //   sqlplus haut/Haut_123@10.1.1.80:1521/dev <<EOF
-            //   SET ECHO ON
-            //   SET FEEDBACK ON
-            //   SET HEADING ON
-            //   ${PACKAGE_HEAD}
-            //   EXIT;
-            //   EOF
-            //   """
           }
           stage('Clone Packages Repository') {
             sh """
