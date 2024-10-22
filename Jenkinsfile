@@ -107,17 +107,19 @@ pipeline {
                 git switch ${BRANCH} || git switch -c ${BRANCH}
             """
           }
-          stage('Create SQL File For Commit') {
-            sh """
+          stage('Create SQL File') {
+            sh '''
                 cd /tmp/test_cam_repo/test_cam
 
-                # Criar o arquivo SQL com o conteúdo das variáveis
-                echo "${PACKAGE_HEAD}" > novo_package.sql
-                echo "/" >> novo_package.sql
-                echo "" >> novo_package.sql
-                echo "${PACKAGE_BODY}" >> novo_package.sql
-                echo "/" >> novo_package.sql
-            """
+                # Criar o arquivo SQL com o conteúdo das variáveis usando cat e heredoc
+                cat << EOF > novo_package.sql
+                ${PACKAGE_HEAD}
+                /
+                
+                ${PACKAGE_BODY}
+                /
+                EOF
+            '''
           }
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
