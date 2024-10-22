@@ -108,15 +108,13 @@ pipeline {
             """
           }
           stage('Create SQL File with Echo') {
-            steps {
-              script {
-                sh """
-                  echo "${PACKAGE_HEAD}" > /tmp/test_cam_repo/test_cam/novo_package.sql
-                  echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
-                  echo "${PACKAGE_BODY}" >> /tmp/test_cam_repo/test_cam/novo_package.sql
-                  echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
-                """
-              }
+            script {
+              sh """
+                echo "${PACKAGE_HEAD}" > /tmp/test_cam_repo/test_cam/novo_package.sql
+                echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                echo "${PACKAGE_BODY}" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+              """
             }
           }
           stage('Commit and Push Changes to Git') {
