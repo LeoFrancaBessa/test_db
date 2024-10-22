@@ -123,15 +123,10 @@ ${PACKAGE_BODY}
                   git config --global user.name "${GIT_AUTHOR_USERNAME}"
                   cd /tmp/test_cam_repo/test_cam
 
-                  # Verificar se há mudanças no repositório
-                  if ! git diff --quiet HEAD; then
-                      git add .
-                      git commit -m "${commitMessage}"
-                      git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
-                      git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
-                  else
-                      echo "Sem mudanças para commitar."
-                  fi
+                  git add .
+                  git commit -m "${commitMessage}"
+                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH} || true
+                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_db.git ${BRANCH}
               """
             }
           }
