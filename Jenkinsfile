@@ -61,26 +61,32 @@ pipeline {
               mkdir /home/ansible/roles 2>/dev/null
               cd /home/ansible/roles
               echo $(pwd)
+              git clone https://github.com/LeoFrancaBessa/test_procedure_ansible.git test_procedure_ansible
             '''
           }
           stage('Execute Playbook') {
             sh '''#!/bin/bash
-              git clone https://github.com/LeoFrancaBessa/test_procedure_ansible.git
-              mv test_procedure_ansible/playbook.yml /home/ansible/main_playbook.yml
+              mv ./playbook.yml /home/ansible/main_playbook.yml
               cat /home/ansible/main_playbook.yml
             '''
             ansiblePlaybook (
               playbook: '/home/ansible/main_playbook.yml',
               inventory: '/home/ansible/hosts',
               vaultCredentialsId: 'ansible_vault_pass',
-              colorized: 'true'
+              colorized: 'true',
+              extraVars: [
+                DB_HOST = "${DB_HOST}"
+                DB_SCHEMA = "${DB_SCHEMA}",
+                DB_USER = "${DB_USER}",
+                DB_PASS = "${DB_PASS}"
+              ]
             )
           }
           stage('Clone Packages Repository') {
             sh """
                 mkdir -p /tmp/test_cam_repo  // Cria um diretório temporário para o repositório
                 cd /tmp/test_cam_repo        // Muda para o diretório temporário
-                git clone https://github.com/LeoFrancaBessa/test_cam.git
+                git clone ${GIT_REPO}
                 cd test_cam
                 git switch ${BRANCH} || git switch -c ${BRANCH}
             """

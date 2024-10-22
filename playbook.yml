@@ -3,9 +3,8 @@
   connection: local
   gather_facts: false
 
-  # roles:
-  #   - mgmt_db
-  # roles são atribuidas e criadas neste comando no jenkins file: git clone mgmt_db
+  roles:
+    - test_procedure_ansible
 
   vars:
 
