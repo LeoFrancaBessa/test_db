@@ -121,7 +121,6 @@ pipeline {
           stage('Commit and Push Changes to Git') {
             withCredentials([usernamePassword(credentialsId: 'github-test-procedure', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                 sh """
-                  cat /home/ansible/log.txt
                   git config --global user.email "${GIT_AUTHOR_EMAIL}"
                   git config --global user.name "${GIT_AUTHOR_USERNAME}"
                   cd /tmp/test_cam_repo/test_cam
