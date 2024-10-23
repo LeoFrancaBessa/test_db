@@ -149,26 +149,32 @@ pipeline {
 
   post {
     success {
+        // Construir a mensagem de sucesso
+        def successMessage = "{\"content\": \"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). Arquivos modificados: ${OUTPUT_FILE}.\"}"
         httpRequest httpMode: 'POST', 
             url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
             formData: [
-                [contentType: 'application/json', name: 'payload_json', body: "{\"content\": \"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"],
+                [contentType: 'application/json', name: 'payload_json', body: successMessage],
                 [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
             ]
     }
     failure {
+        // Construir a mensagem de falha
+        def failureMessage = "{\"content\": \"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). Arquivos modificados: ${OUTPUT_FILE}.\"}"
         httpRequest httpMode: 'POST', 
             url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
             formData: [
-                [contentType: 'application/json', name: 'payload_json', body: "{\"content\": \"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"],
+                [contentType: 'application/json', name: 'payload_json', body: failureMessage],
                 [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
             ]
     }
     aborted {
+        // Construir a mensagem de abortado
+        def abortedMessage = "{\"content\": \"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). Arquivos modificados: ${OUTPUT_FILE}.\"}"
         httpRequest httpMode: 'POST', 
             url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
             formData: [
-                [contentType: 'application/json', name: 'payload_json', body: "{\"content\": \"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"],
+                [contentType: 'application/json', name: 'payload_json', body: abortedMessage],
                 [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
             ]
     }
