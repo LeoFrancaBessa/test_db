@@ -172,7 +172,8 @@ pipeline {
             [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: '/home/ansible/log.txt']
         ]
     }
-    // always {
+    always {
+    sh "cat /home/ansible/log.txt"
     //   cleanWs (
     //     cleanWhenAborted: true,
     //     cleanWhenFailure: true,
@@ -183,6 +184,6 @@ pipeline {
     //     notFailBuild: true,
     //     disableDeferredWipeout: true
     //   )
-    // }
+    }
   }
 }
