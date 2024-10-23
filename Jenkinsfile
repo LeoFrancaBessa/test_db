@@ -96,7 +96,7 @@ pipeline {
                   package_head : '${PACKAGE_HEAD}',
                   package_body : '${PACKAGE_BODY}'
                 ]
-              )
+              ) | tee log.txt
             }
           }
           stage('Clone Packages Repository') {
