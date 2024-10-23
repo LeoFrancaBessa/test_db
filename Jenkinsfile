@@ -176,7 +176,7 @@ pipeline {
 
 def sendNotification(String status) {
 // Constrói a mensagem com o status diretamente
-def message = "{\"content\": \"Deploy ${status} na base ${DB_HOST}, schema ${DB_NAME} \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console \\nCommit: ${commitMessage} \\nAutor: ${GIT_AUTHOR_USERNAME} \\nLog: \"}"
+def message = "{\"content\": \"Deploy ${status} na base ${DB_HOST}, schema ${DB_NAME} \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console \\nCommit: ${commitMessage} \\nAutor: ${GIT_AUTHOR_USERNAME} \\nLog da Execução SQL Plus: \"}"
 
 // Envia a notificação via HTTP Request
 httpRequest httpMode: 'POST', 
