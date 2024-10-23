@@ -13,6 +13,7 @@ pipeline {
       commitMessage = "Adicionado arquivo da procedure SQL"
 
       // Definir o conteúdo da procedure diretamente como texto
+      PACKAGE_NAME = "exemplo_package"
       PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE HAUT.exemplo_package IS
                       -- Procedimento que imprime uma mensagem
                       PROCEDURE diga_ola(nome IN VARCHAR2);
@@ -110,10 +111,10 @@ pipeline {
           stage('Create SQL File with Echo') {
             script {
               sh """
-                echo "${PACKAGE_HEAD}" > /tmp/test_cam_repo/test_cam/novo_package.sql
-                echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
-                echo "${PACKAGE_BODY}" >> /tmp/test_cam_repo/test_cam/novo_package.sql
-                echo "/" >> /tmp/test_cam_repo/test_cam/novo_package.sql
+                echo "${PACKAGE_HEAD}" > /tmp/test_cam_repo/test_cam/${PACKAGE_NAME}.sql
+                echo "/" >> /tmp/test_cam_repo/test_cam/${PACKAGE_NAME}.sql
+                echo "${PACKAGE_BODY}" >> /tmp/test_cam_repo/test_cam/${PACKAGE_NAME}.sql
+                echo "/" >> /tmp/test_cam_repo/test_cam/${PACKAGE_NAME}.sql
               """
             }
           }
