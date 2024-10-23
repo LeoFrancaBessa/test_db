@@ -173,7 +173,7 @@ pipeline {
         ]
     }
     always {
-    sh "cat /home/ansible/log.txt"
+    sh 'ls -l /home/ansible/log.txt'
     //   cleanWs (
     //     cleanWhenAborted: true,
     //     cleanWhenFailure: true,
