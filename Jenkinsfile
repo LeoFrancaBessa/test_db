@@ -161,7 +161,7 @@ pipeline {
         url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
         formData: [
             [contentType: 'application/json', name: 'payload_json', body: '{"content": "Deploy SUCESSO na base ${DB_HOST}, schema ${DB_SCHEMA}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\nArquivos modificados: ${OUTPUT_FILE}"}'],
-            [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: '/home/ansible/log.txt']
+            [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: '${env.WORKSPACE}/log.txt']
         ]
     }
     aborted{
@@ -169,11 +169,11 @@ pipeline {
         url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
         formData: [
             [contentType: 'application/json', name: 'payload_json', body: '{"content": "Deploy ABORTADO na base ${DB_HOST}, schema ${DB_SCHEMA}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\nArquivos modificados: ${OUTPUT_FILE}"}'],
-            [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: '/home/ansible/log.txt']
+            [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: '${env.WORKSPACE}/log.txt']
         ]
     }
     always {
-    sh 'ls -l /home/ansible/log.txt'
+    sh 'cp /home/ansible/log.txt ${env.WORKSPACE}/log.txt'
     //   cleanWs (
     //     cleanWhenAborted: true,
     //     cleanWhenFailure: true,
