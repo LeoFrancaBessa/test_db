@@ -150,7 +150,7 @@ pipeline {
   post {
     success {
         script {
-            def successMessage = "{\"content\": \"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"
+            def successMessage = "{\"content\": \"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
             httpRequest httpMode: 'POST', 
                 url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
                 formData: [
@@ -161,7 +161,7 @@ pipeline {
     }
     failure {
         script {
-            def failureMessage = "{\"content\": \"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"
+            def failureMessage = "{\"content\": \"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
             httpRequest httpMode: 'POST', 
                 url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
                 formData: [
@@ -172,7 +172,7 @@ pipeline {
     }
     aborted {
         script {
-            def abortedMessage = "{\"content\": \"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\"}"
+            def abortedMessage = "{\"content\": \"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
             httpRequest httpMode: 'POST', 
                 url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
                 formData: [
