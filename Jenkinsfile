@@ -125,11 +125,16 @@ pipeline {
                   git config --global user.email "${GIT_AUTHOR_EMAIL}"
                   git config --global user.name "${GIT_AUTHOR_USERNAME}"
                   cd /tmp/test_cam_repo/test_cam
-
                   git add .
-                  git commit -m "${commitMessage}"
-                  git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH} || true
-                  git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH}
+
+                  # Verificar se há mudanças staged
+                  if git diff --cached --exit-code; then
+                      echo "Sem modificações para commit."
+                  else
+                      git commit -m "${commitMessage}"
+                      git pull --rebase https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH} || true
+                      git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/LeoFrancaBessa/test_cam.git ${BRANCH}
+                  fi
               """
             }
           }
