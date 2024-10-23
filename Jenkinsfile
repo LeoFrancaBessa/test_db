@@ -150,17 +150,17 @@ pipeline {
   post {
     failure {
         sh """
-            curl -F "payload_json={\\\"content\\\": \\\"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\\\"}" -F "file1=/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
         """
     }
     success {
         sh """
-            curl -F "payload_json={\\\"content\\\": \\\"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
         """
     }
     aborted {
         sh """
-            curl -F "payload_json={\\\"content\\\": \\\"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
         """
     }
     // always {
