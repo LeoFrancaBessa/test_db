@@ -172,17 +172,17 @@ pipeline {
             [contentType: 'text/plain', name: 'file1', fileName: 'file.txt', uploadFile: '/home/ansible/log.txt']
         ]
     }
-    always {
-        cleanWs (
-            cleanWhenAborted: true,
-            cleanWhenFailure: true,
-            cleanWhenNotBuilt: false,
-            cleanWhenSuccess: true,
-            cleanWhenUnstable: true,
-            deleteDirs: true,
-            notFailBuild: true,
-            disableDeferredWipeout: true
-        )
-    }
+    // always {
+    //   cleanWs (
+    //     cleanWhenAborted: true,
+    //     cleanWhenFailure: true,
+    //     cleanWhenNotBuilt: false,
+    //     cleanWhenSuccess: true,
+    //     cleanWhenUnstable: true,
+    //     deleteDirs: true,
+    //     notFailBuild: true,
+    //     disableDeferredWipeout: true
+    //   )
+    // }
   }
 }
