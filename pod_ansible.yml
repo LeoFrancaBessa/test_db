@@ -6,7 +6,7 @@ spec:
   containers:
     - name: ansible
       image: "image-registry.openshift-image-registry.svc:5000/\
-        cit-hiperautomacao/ansible-oracle:v0.5cit"
+              cit-hiperautomacao/ansible:v0.8cit"
       imagePullPolicy: Always
       command:
         - tail
@@ -20,7 +20,7 @@ spec:
           memory: 2Gi
     - name: jnlp
       image: "image-registry.openshift-image-registry.svc:5000/\
-        cit-hiperautomacao/jenkins-agent:jdk11-v0.4cit"
+              cit-hiperautomacao/jenkins-agent:jdk11-v0.4cit"
   nodeSelector:
-    env: hml
+    env: prd
 imagePullSecrets:
