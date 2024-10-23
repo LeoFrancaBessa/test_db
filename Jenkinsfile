@@ -148,51 +148,41 @@ pipeline {
   }
 
   post {
+    always {
+        // Move o log para o workspace
+        sh "mv /home/ansible/log.txt ${env.WORKSPACE}/log.txt"
+    }
+
     success {
         script {
-            def successMessage = "{\"content\": \"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
-            httpRequest httpMode: 'POST', 
-                url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
-                formData: [
-                    [contentType: 'application/json', name: 'payload_json', body: successMessage],
-                    [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
-                ]
+            sendNotification('SUCESSO')
         }
     }
+
     failure {
         script {
-            def failureMessage = "{\"content\": \"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
-            httpRequest httpMode: 'POST', 
-                url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
-                formData: [
-                    [contentType: 'application/json', name: 'payload_json', body: failureMessage],
-                    [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
-                ]
+            sendNotification('FALHOU')
         }
     }
+
     aborted {
         script {
-            def abortedMessage = "{\"content\": \"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage}. \\nAutor: ${GIT_AUTHOR_USERNAME}. \\nLog: \"}"
-            httpRequest httpMode: 'POST', 
-                url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
-                formData: [
-                    [contentType: 'application/json', name: 'payload_json', body: abortedMessage],
-                    [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
-                ]
+            sendNotification('ABORTADO')
         }
     }
-  always {
-    sh "mv /home/ansible/log.txt ${env.WORKSPACE}/log.txt"
-    //   cleanWs (
-    //     cleanWhenAborted: true,
-    //     cleanWhenFailure: true,
-    //     cleanWhenNotBuilt: false,
-    //     cleanWhenSuccess: true,
-    //     cleanWhenUnstable: true,
-    //     deleteDirs: true,
-    //     notFailBuild: true,
-    //     disableDeferredWipeout: true
-    //   )
-    }
   }
+}
+
+
+def sendNotification(String status) {
+// Constrói a mensagem com o status diretamente
+def message = "{\"content\": \"Deploy ${status} na base ${DB_HOST}, schema ${DB_SCHEMA} \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console \\nCommit: ${commitMessage} \\nAutor: ${GIT_AUTHOR_USERNAME} \\nLog: \"}"
+
+// Envia a notificação via HTTP Request
+httpRequest httpMode: 'POST', 
+    url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
+    formData: [
+      [contentType: 'application/json', name: 'payload_json', body: message],
+      [contentType: 'text/plain', name: 'file1', fileName: 'log.txt', uploadFile: "${env.WORKSPACE}/log.txt"]
+  ]
 }
