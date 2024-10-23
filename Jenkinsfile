@@ -173,7 +173,7 @@ pipeline {
         ]
     }
     always {
-    sh 'cp /home/ansible/log.txt ${env.WORKSPACE}/log.txt'
+    sh "mv /home/ansible/log.txt ${env.WORKSPACE}/log.txt"
     //   cleanWs (
     //     cleanWhenAborted: true,
     //     cleanWhenFailure: true,
