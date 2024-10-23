@@ -148,6 +148,30 @@ pipeline {
   }
 
   post {
+    failure {
+        httpRequest httpMode: 'POST', 
+        url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
+        formData: [
+            [contentType: 'application/json', name: 'payload_json', body: '{"content": "Deploy FALHOU na base ${DB_HOST}, schema ${DB_SCHEMA}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\nArquivos modificados: ${OUTPUT_FILE}"}'],
+            [contentType: 'text/plain', name: 'file1', fileName: 'file.txt', uploadFile: '/home/ansible/log.txt']
+        ]
+    }
+    success{
+        httpRequest httpMode: 'POST', 
+        url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
+        formData: [
+            [contentType: 'application/json', name: 'payload_json', body: '{"content": "Deploy SUCESSO na base ${DB_HOST}, schema ${DB_SCHEMA}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\nArquivos modificados: ${OUTPUT_FILE}"}'],
+            [contentType: 'text/plain', name: 'file1', fileName: 'file.txt', uploadFile: '/home/ansible/log.txt']
+        ]
+    }
+    aborted{
+        httpRequest httpMode: 'POST', 
+        url: 'https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs',
+        formData: [
+            [contentType: 'application/json', name: 'payload_json', body: '{"content": "Deploy ABORTADO na base ${DB_HOST}, schema ${DB_SCHEMA}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\nArquivos modificados: ${OUTPUT_FILE}"}'],
+            [contentType: 'text/plain', name: 'file1', fileName: 'file.txt', uploadFile: '/home/ansible/log.txt']
+        ]
+    }
     always {
         cleanWs (
             cleanWhenAborted: true,
