@@ -12,6 +12,11 @@ pipeline {
       GIT_AUTHOR_EMAIL = 'teste@teste.com'
       commitMessage = "Adicionado arquivo da procedure SQL"
 
+     // Variaveis banco de dados
+      DB_HOST = "10.1.1.80"
+      DB_NAME = "dev"
+      DB_PORT = '1521'
+
       // Definir o conteúdo da procedure diretamente como texto
       PACKAGE_NAME = "exemplo_package"
       PACKAGE_HEAD = """CREATE OR REPLACE PACKAGE HAUT.exemplo_package IS
@@ -88,9 +93,9 @@ pipeline {
                 vaultCredentialsId: 'ansible_vault_pass',
                 colorized: 'true',
                 extraVars: [
-                  db_host : "10.1.1.80",
-                  db_name : "dev",
-                  db_port: '1521',
+                  db_host : "${DB_HOST}",
+                  db_name : "${DB_NAME}",
+                  db_port: "${DB_PORT}",
                   db_user : "${DB_USER}",
                   db_pass : "${DB_PASS}",
                   package_head : '${PACKAGE_HEAD}',
@@ -143,17 +148,32 @@ pipeline {
   }
 
   post {
+    failure {
+        sh """
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy FALHOU na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}).\\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+        """
+    }
+    success {
+        sh """
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy SUCESSO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+        """
+    }
+    aborted {
+        sh """
+            curl -F "payload_json={\\\"content\\\": \\\"Deploy ABORTADO na base ${DB_HOST}, schema ${DB_NAME}. \\nLog completo: http://jenkins.sefaz.ma.gov.br/job/${env.JOB_NAME}/${env.BUILD_NUMBER}/console. \\nCommit: ${commitMessage} (${GIT_AUTHOR_USERNAME}). \\\"}" -F "file1=@/home/ansible/log.txt" -H "Content-Type:multipart/form-data" https://discordapp.com/api/webhooks/1296172490657234966/eS1biobe9Ll34r-lf4VSHcw4kALMslJa7CuN0V485vXy2sZCauM00szX4Lzjq-H6xuhs
+        """
+    }
     always {
-      cleanWs (
-        cleanWhenAborted: true,
-        cleanWhenFailure: true,
-        cleanWhenNotBuilt: false,
-        cleanWhenSuccess: true,
-        cleanWhenUnstable: true,
-        deleteDirs: true,
-        notFailBuild: true,
-        disableDeferredWipeout: true
-      )
+        cleanWs (
+            cleanWhenAborted: true,
+            cleanWhenFailure: true,
+            cleanWhenNotBuilt: false,
+            cleanWhenSuccess: true,
+            cleanWhenUnstable: true,
+            deleteDirs: true,
+            notFailBuild: true,
+            disableDeferredWipeout: true
+        )
     }
   }
 }
